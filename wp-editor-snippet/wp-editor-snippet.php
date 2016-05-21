@@ -25,7 +25,7 @@ add_action( 'init', 'wp_editor_snippet' );
 //Function to get post in shortcode with post  id
 
 function wp_snippet_shortcode($atts){
-
+				
 			$param=shortcode_atts(array('id'=>''),$atts);
 			$type = 'wp_snippet';
 			
@@ -34,16 +34,20 @@ function wp_snippet_shortcode($atts){
 			'p'=>$param['id'],
 			);
 			
-			
+			 $content="";
 			$wp_snippet_post = null;
 			$wp_snippet_post = new WP_Query($wp_snippet_query);
 			if( $wp_snippet_post->have_posts()){  
 			while ($wp_snippet_post->have_posts()):$wp_snippet_post->the_post();?>
 		    
-	<?php the_content();?>
+	<?php $content= get_the_content();?>
 	<?php  endwhile;
+	
 	}
+$output=	apply_filters('the_content',$content);
+return	$output;
 	 wp_reset_query();
+	
 	 }
 ?>
 <?php
